@@ -7,8 +7,8 @@ const createTimeJson = (data) => {
 
         let ts = new Date( Number(data) );
 
-        if (!ts)
-            return reject(new Error('Invalid date convertion'));
+        if (isNaN(ts))
+            return reject({error: ts.toString()});
 
         return resolve({
             unix: ts.getTime(),
@@ -19,6 +19,13 @@ const createTimeJson = (data) => {
 
 const api = () => {
     let routes = new Router();
+
+    routes.get('/', (req, res) => {
+        createTimeJson(Date.now())
+            .then(data => res.status(200).json(data).end())
+            .catch(err => res.status(400).json(err).end());
+            
+    });
 
     // your first API endpoint... 
     routes.get("/hello", function (req, res) {
