@@ -12,10 +12,10 @@ const createTimeJson = (data) => {
 
         return resolve({
             unix: ts.getTime(),
-            utc: ts.toISOString()
+            utc: ts.toUTCString()
         });
     });
-}
+};
 
 const api = () => {
     let routes = new Router();
@@ -25,10 +25,10 @@ const api = () => {
         res.json({greeting: 'hello API'});
     });
 
-    routes.get('/:type', (req, res, next) => {
-        const { type } = req.params;
+    routes.get('/:date', (req, res, next) => {
+        const { date } = req.params;
 
-        createTimeJson(type)
+        createTimeJson(date)
             .then(data => res.status(200).json(data).end())
             .catch(err => res.status(400).json(err).end());
     });
